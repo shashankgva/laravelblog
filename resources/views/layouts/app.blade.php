@@ -12,13 +12,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
+    @yield('styles')
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-
                     <!-- Collapsed Hamburger -->
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
                         <span class="sr-only">Toggle Navigation</span>
@@ -70,11 +71,76 @@
                 </div>
             </div>
         </nav>
+        <div class="container">\
+            <div class="row">
+                @if (Auth::check())
+                    <div class="col-lg-4">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{{ route('post.create') }}" title="">Create New Post</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ route('dashboard')}}" title="">Home</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ route('categories')}}" title="">Categories</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ route('posts')}}" title="">Posts</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ route('category.create')}}" title="">Create New Category</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ route('posts.trashed')}}" title="">Trashed Posts</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ route('tag.create') }}" title="">Create New Tag</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{ route('tags')}}" title="">Tags</a>
+                            </li>
+                            @if (Auth::user()->admin)
+                                <li class="list-group-item">
+                                    <a href="{{ route('users')}}" title="">Users</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="{{ route('user.create')}}" title="">New Users</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="{{ route('settings')}}" title="">Settings</a>
+                                </li>
+                            @endif
+                            <li class="list-group-item">
+                                <a href="{{ route('user.profile')}}" title="">My Profile</a>
+                            </li>
 
-        @yield('content')
+                        </ul>
+                    </div>
+                @endif
+                    <div class="col-lg-8">
+                        @yield('content')
+                    </div>
+            </div>    
+        </div>   
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js') }}" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        @if (Session::has('success'))
+            toastr.success("{{ Session::get('success')}}")
+
+        @endif
+
+        @if (Session::has('info'))
+            toastr.info("{{ Session::get('info')}}");
+
+        @endif
+
+    </script>
+
+    @yield('scripts')
 </body>
 </html>
